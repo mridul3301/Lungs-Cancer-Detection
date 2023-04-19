@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html >
+<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<head>
+  <meta charset="UTF-8">
+  <title>Predict Lung Cancer</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  
+</head>
+
+<body>
+ <div class="login">
+	<h1>Lung Cancer Prediction</h1>
+
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+      <div class = 'col'>
+
+        <div class="form-group">
+          <label for="age" class="ph-area" ></label>
+          <input type="number" class="form-control" placeholder="Age" name="age" id="age" required>
+        </div>
+
+        <div class="form-group">
+          <label for="Smoker" class="ph-area" name="Smoker"></label>
+           <select class="form-control" name="Smoker" required="required">
+             <option value="" selected>Smoker or Not</option>
+             <option value="0">Non-Smoker</option>
+             <option value="1">Smoker</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Yellow Fingers" class="ph-area" name="Yellow Fingers"></label>
+           <select class="form-control" name="Yellow Fingers" required="required">
+             <option value="" selected>Yellow Fingers or Not</option>
+             <option value="0">No-Yellow Fingers</option>
+             <option value="1">Yellow Fingers</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Anxiety" class="ph-area" name="Anxiety"></label>
+           <select class="form-control" name="Anxiety" required="required">
+             <option value="" selected>Anxiety or Not</option>
+             <option value="0">No Anxiety</option>
+             <option value="1">Anxiety</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Peer Pressure" class="ph-area" name="Peer Pressure"></label>
+           <select class="form-control" name="Peer Pressure" required="required">
+             <option value="" selected>Peer Pressure or Not</option>
+             <option value="0">No-Peer Pressure</option>
+             <option value="1">Peer Pressure</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Chronic Disease" class="ph-area" name="Chronic Disease"></label>
+           <select class="form-control" name="Chronic Disease" required="required">
+             <option value="" selected>Chronic Disease or Not</option>
+             <option value="0">No Chronic Disease</option>
+             <option value="1">Chronic Disease</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Fatigue" class="ph-area" name="Fatigue"></label>
+           <select class="form-control" name="Fatigue" required="required">
+             <option value="" selected>Fatigue or Not</option>
+             <option value="0">No Fatigue</option>
+             <option value="1">Fatigue</option> 
+           </select>
+         </div>
+
+        
+          
+      </div>
+
+      <div class = 'col'>
+        <div class="form-group">
+          <label for="Allergy" class="ph-area" name="Allergy"></label>
+           <select class="form-control" name="Allergy" required="required">
+             <option value="" selected>Allergetic or Not</option>
+             <option value="0">No Allergy</option>
+             <option value="1">Allergy</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Wheezing" class="ph-area" name="Wheezing"></label>
+           <select class="form-control" name="Wheezing" required="required">
+             <option value="" selected>Wheezing or Not</option>
+             <option value="0">No Wheezing</option>
+             <option value="1">Wheezing</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Alcohol" class="ph-area" name="Alcohol"></label>
+           <select class="form-control" name="Alcohol" required="required">
+             <option value="" selected>Alcohol Consumption or Not</option>
+             <option value="0">No Alcohol Consumption</option>
+             <option value="1">Alcohol Consumption</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Coughing" class="ph-area" name="Coughing"></label>
+           <select class="form-control" name="Coughing" required="required">
+             <option value="" selected>Coughing or Not</option>
+             <option value="0">No Coughing</option>
+             <option value="1">Coughing</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Breath Shortness" class="ph-area" name="Breath Shortness"></label>
+           <select class="form-control" name="Breath Shortness" required="required">
+             <option value="" selected>Breath Shortness or Not</option>
+             <option value="0">No Breath Shortness</option>
+             <option value="1">Breath Shortness</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Difficulty" class="ph-area" name="Difficulty"></label>
+           <select class="form-control" name="Difficulty" required="required">
+             <option value="" selected>Difficulty in Swallowing</option>
+             <option value="0">No Difficulty</option>
+             <option value="1">Difficulty</option> 
+           </select>
+         </div>
+
+         <div class="form-group">
+          <label for="Chest Pain" class="ph-area" name="Chest Pain"></label>
+           <select class="form-control" name="Chest Pain" required="required">
+             <option value="" selected>Chest Pain</option>
+             <option value="0">No Chest Pain</option>
+             <option value="1">Chest Pain</option> 
+           </select>
+         </div>
+          
+        </div>
+        <div class="form-group">
+                <label for="Gender" class="ph-area" name="Gender"></label>
+                 <select class="form-control" name="Gender" required="required">
+                   <option value="" selected>Gender</option>
+                   <option value="0">Male</option>
+                   <option value="1">Female</option> 
+                 </select>
+               </div>
+
+        <button type="submit" value = 'output' name = 'output' class="btn btn-primary btn-block btn-large">Predict</button>
+    </form>
+
+   <br>
+   <br>
+   {{ prediction_text }}
+
+ </div>
+
+
+</body>
+</html>
