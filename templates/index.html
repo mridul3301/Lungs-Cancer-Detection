@@ -1,172 +1,211 @@
 <!DOCTYPE html>
-<html >
-<!--From https://codepen.io/frytyler/pen/EGdtg-->
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Predict Lung Cancer</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lungs Cancer Prediction</title>
+    <meta name="author" content="David Grzyb">
+    <meta name="description" content="">
+
+    {% load static %}
+  <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}"/>
+<link rel="stylesheet" href="/static/css/styles.css">
+
+    <!-- Tailwind -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
+
+        .font-family-karla {
+            font-family: karla;
+        }
+    </style>
 </head>
+<body class="bg-white font-family-karla h-screen">
 
-<body>
- <div class="login">
-	<h1>Lung Cancer Prediction</h1>
+    <div class = "top">
+        <a href="/"><p class = "top" style="color: white; border-color:white;">  Lungs Cancer Prediction </p></a>
+        </div>
+    
 
-     <!-- Main Input For Receiving Query to our ML -->
-    <form action="{{ url_for('predict')}}"method="post">
-      <div class = 'col'>
+    <div class="w-full flex flex-wrap top-space  my-18">
 
-        <div class="form-group">
-          <label for="age" class="ph-area" ></label>
-          <input type="number" class="form-control" placeholder="Age" name="age" id="age" required>
+        <!-- Register Section -->
+        <div class="w-full md:w-1/3 flex flex-col">
+
+
+            <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+               
+                <form class="flex flex-col pt-3 md:pt-8" onsubmit="event.preventDefault();">
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="age" class="text-lg ph-area">Enter Age</label>
+                        <input type="number" name="age" id="age" placeholder="Age" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; border-color:white;" required>
+                    </div>
+
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="gender" class="text-lg ph-area">Enter Gender</label>
+                        <select name="gender" id="gender" placeholder="Gender" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Gender</option>
+                        <option value="1">Male</option>
+                        <option value="0">Female</option>  
+                        </select>
+                    </div>
+    
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="smoker" class="text-lg ph-area">Smoker/Non-Smoker</label>
+                        <select name="smoker" id="smoker" placeholder="Smoker/Non-Smoker" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Smoker/ Non-Smoker</option>
+                        <option value="0">Non-Smoker</option>
+                        <option value="1">Smoker</option>
+                        </select>                     
+                    </div>
+
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="fingers" class="text-lg ph-area">Yellow Fingers</label>
+                        <select name="fingers" id="fingers" placeholder="Yello Fingers" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Yellow Fingers or Not</option>
+                        <option value="0">No Yellow Fingers</option>
+                        <option value="1">Yellow Fingers</option>
+                        </select>                     
+                    </div>
+
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="anxiety" class="text-lg ph-area">Anxiety/No Anxiety</label>
+                        <select name="anxiety" id="anxiety" placeholder="Anxiety" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Anxiety</option>
+                        <option value="0">No Anxiety</option>
+                        <option value="1">Anxiety</option>
+                        </select>                     
+                    </div>
+               
+            </div>
+
         </div>
 
-        <div class="form-group">
-          <label for="Smoker" class="ph-area" name="Smoker"></label>
-           <select class="form-control" name="Smoker" required="required">
-             <option value="" selected>Smoker or Not</option>
-             <option value="0">Non-Smoker</option>
-             <option value="1">Smoker</option> 
-           </select>
-         </div>
+ <!-- Register Section -->
+ <div class="w-full md:w-1/3 flex flex-col">
 
-         <div class="form-group">
-          <label for="Yellow Fingers" class="ph-area" name="Yellow Fingers"></label>
-           <select class="form-control" name="Yellow Fingers" required="required">
-             <option value="" selected>Yellow Fingers or Not</option>
-             <option value="0">No-Yellow Fingers</option>
-             <option value="1">Yellow Fingers</option> 
-           </select>
-         </div>
 
-         <div class="form-group">
-          <label for="Anxiety" class="ph-area" name="Anxiety"></label>
-           <select class="form-control" name="Anxiety" required="required">
-             <option value="" selected>Anxiety or Not</option>
-             <option value="0">No Anxiety</option>
-             <option value="1">Anxiety</option> 
-           </select>
-         </div>
+    <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+       
+    
+            <div class="flex flex-col pt-4 mb-3">
+                <label for="peer" class="text-lg ph-area">Peer Pressure ?</label>
+                <select name="peer" id="peer" placeholder="Peer Pressure" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                <option value="" selected >Peer Pressure</option>
+                <option value="0">No</option>
+                <option value="1">Yes</option>  
+                </select>
+            </div>
 
-         <div class="form-group">
-          <label for="Peer Pressure" class="ph-area" name="Peer Pressure"></label>
-           <select class="form-control" name="Peer Pressure" required="required">
-             <option value="" selected>Peer Pressure or Not</option>
-             <option value="0">No-Peer Pressure</option>
-             <option value="1">Peer Pressure</option> 
-           </select>
-         </div>
+            <div class="flex flex-col pt-4 mb-3">
+                <label for="chronic" class="text-lg ph-area">Chronic Disease</label>
+                <select name="chronic" id="chronic" placeholder="Chronic Disease" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                <option value="" selected >Chronic Disease</option>
+                <option value="0">Negative</option>
+                <option value="1">Positive</option>  
+                </select>
+            </div>
 
-         <div class="form-group">
-          <label for="Chronic Disease" class="ph-area" name="Chronic Disease"></label>
-           <select class="form-control" name="Chronic Disease" required="required">
-             <option value="" selected>Chronic Disease or Not</option>
-             <option value="0">No Chronic Disease</option>
-             <option value="1">Chronic Disease</option> 
-           </select>
-         </div>
+            <div class="flex flex-col pt-4 mb-3">
+                <label for="fatigue" class="text-lg ph-area">Fatigue/No-Fatigue</label>
+                <select name="fatigue" id="fatigue" placeholder="Fatigue/No-Fatigue" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                <option value="" selected >Fatigue/No-Fatigue</option>
+                <option value="0">No-Fatigue</option>
+                <option value="1">Fatigue</option>
+                </select>                     
+            </div>
 
-         <div class="form-group">
-          <label for="Fatigue" class="ph-area" name="Fatigue"></label>
-           <select class="form-control" name="Fatigue" required="required">
-             <option value="" selected>Fatigue or Not</option>
-             <option value="0">No Fatigue</option>
-             <option value="1">Fatigue</option> 
-           </select>
-         </div>
+            <div class="flex flex-col pt-4 mb-3">
+                <label for="allergy" class="text-lg ph-area">Allergy/No-Allergy</label>
+                <select name="allergy" id="allergy" placeholder="Allergy/No-Allergy" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                <option value="" selected >Allergy/No-Allergy</option>
+                <option value="0">No-Allergy</option>
+                <option value="1">Allergy</option>
+                </select>                     
+            </div>
 
+            <div class="flex flex-col pt-4 mb-3">
+                <label for="wheezing" class="text-lg ph-area">Wheezing/No-Wheezing</label>
+                <select name="wheezing" id="wheezing" placeholder="Wheezing/No-Wheezing" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                <option value="" selected >Wheezing/No-Wheezing</option>
+                <option value="0">No-Wheezing</option>
+                <option value="1">Wheezing</option>
+                </select>                     
+            </div>
         
-          
-      </div>
+    </div>
 
-      <div class = 'col'>
-        <div class="form-group">
-          <label for="Allergy" class="ph-area" name="Allergy"></label>
-           <select class="form-control" name="Allergy" required="required">
-             <option value="" selected>Allergetic or Not</option>
-             <option value="0">No Allergy</option>
-             <option value="1">Allergy</option> 
-           </select>
-         </div>
+</div>
 
-         <div class="form-group">
-          <label for="Wheezing" class="ph-area" name="Wheezing"></label>
-           <select class="form-control" name="Wheezing" required="required">
-             <option value="" selected>Wheezing or Not</option>
-             <option value="0">No Wheezing</option>
-             <option value="1">Wheezing</option> 
-           </select>
-         </div>
 
-         <div class="form-group">
-          <label for="Alcohol" class="ph-area" name="Alcohol"></label>
-           <select class="form-control" name="Alcohol" required="required">
-             <option value="" selected>Alcohol Consumption or Not</option>
-             <option value="0">No Alcohol Consumption</option>
-             <option value="1">Alcohol Consumption</option> 
-           </select>
-         </div>
 
-         <div class="form-group">
-          <label for="Coughing" class="ph-area" name="Coughing"></label>
-           <select class="form-control" name="Coughing" required="required">
-             <option value="" selected>Coughing or Not</option>
-             <option value="0">No Coughing</option>
-             <option value="1">Coughing</option> 
-           </select>
-         </div>
+        <!-- Register Section -->
+        <div class="w-full md:w-1/3 flex flex-col">
 
-         <div class="form-group">
-          <label for="Breath Shortness" class="ph-area" name="Breath Shortness"></label>
-           <select class="form-control" name="Breath Shortness" required="required">
-             <option value="" selected>Breath Shortness or Not</option>
-             <option value="0">No Breath Shortness</option>
-             <option value="1">Breath Shortness</option> 
-           </select>
-         </div>
 
-         <div class="form-group">
-          <label for="Difficulty" class="ph-area" name="Difficulty"></label>
-           <select class="form-control" name="Difficulty" required="required">
-             <option value="" selected>Difficulty in Swallowing</option>
-             <option value="0">No Difficulty</option>
-             <option value="1">Difficulty</option> 
-           </select>
-         </div>
+            <div class="flex flex-col justify-center md:justify-start my-auto pt-8 md:pt-0 px-8 md:px-24 lg:px-32">
+               
+               
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="alcohol" class="text-lg ph-area">Alcohol Consumption</label>
+                        <select name="alcohol" id="alcohol" placeholder="Alcohol Consumption" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Alcohol Consumption</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>  
+                        </select>
+                    </div>
 
-         <div class="form-group">
-          <label for="Chest Pain" class="ph-area" name="Chest Pain"></label>
-           <select class="form-control" name="Chest Pain" required="required">
-             <option value="" selected>Chest Pain</option>
-             <option value="0">No Chest Pain</option>
-             <option value="1">Chest Pain</option> 
-           </select>
-         </div>
-          
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="coughing" class="text-lg ph-area">Coughing</label>
+                        <select name="coughing" id="coughing" placeholder="Coughing" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Coughing</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>  
+                        </select>
+                    </div>
+    
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="breath" class="text-lg ph-area">Shortness of Breath</label>
+                        <select name="breath" id="breath" placeholder="Shortness of Breath" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Shortness of Breath</option>
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                        </select>                     
+                    </div>
+
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="swallow" class="text-lg ph-area">Difficulty Swallowing</label>
+                        <select name="swallow" id="swallow" placeholder="Difficulty Swallowing" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Difficulty Swallowing</option>
+                        <option value="0">Not Difficult</option>
+                        <option value="1">Difficult</option>
+                        </select>                     
+                    </div>
+
+                    <div class="flex flex-col pt-4 mb-3">
+                        <label for="anxiety" class="text-lg ph-area">Chest Pain</label>
+                        <select name="anxiety" id="anxiety" placeholder="Chest Pain" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mt-1 leading-tight focus:outline-none focus:shadow-outline" style="color: white; background-color: #0000004D;" required>
+                        <option value="" selected >Chest Pain</option>
+                        <option value="0">No Chest Pain</option>
+                        <option value="1">Chest Pain</option>
+                        </select>                     
+                    </div>
+
+                    <a href="/output">
+                        <button class="fixed bottom-20 left-75 bg-blue-500 text-white py-4 px-6 rounded text-center" >
+                            Submit
+                        </button>
+                    </a>
+                </form>
+            </div>
+
         </div>
-        <div class="form-group">
-                <label for="Gender" class="ph-area" name="Gender"></label>
-                 <select class="form-control" name="Gender" required="required">
-                   <option value="" selected>Gender</option>
-                   <option value="0">Male</option>
-                   <option value="1">Female</option> 
-                 </select>
-               </div>
 
-        <button type="submit" value = 'output' name = 'output' class="btn btn-primary btn-block btn-large">Predict</button>
-    </form>
-
-   <br>
-   <br>
-   {{ prediction_text }}
-
- </div>
-
-
+    </div>
+ 
 </body>
+<footer>
+
+</footer>
 </html>
