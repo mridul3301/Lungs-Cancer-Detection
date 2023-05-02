@@ -1,0 +1,1 @@
+web gunicorn LungsCancerPrediction.wsgi:application --log-file -
